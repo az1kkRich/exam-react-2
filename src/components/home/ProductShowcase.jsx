@@ -4,7 +4,7 @@ import { Button } from 'antd';
 import airpods from '../../assets/airpodShowCase.png'
 import ipadpro from '../../assets/ipadPro.png'
 import s21 from '../../assets/s21.png'
-import macbook from '../../assets/macbook_1.png';
+import macbook from '../../assets/Macbook_1.png';
 
 const products = [
   {
