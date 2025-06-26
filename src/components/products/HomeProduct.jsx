@@ -1,6 +1,6 @@
 import { useState } from "react";
-import FilterSidebar from "./Filter";
 import Grid from "./Grid";
+import Filter from "./Filter";
 import i14Pro from "../../assets/Iphone-14-pro-1.png"; // Example image import
 
 // Example product (keyin APIdan olasiz)
@@ -23,7 +23,7 @@ export default function HomePro() {
   return (
     <div className="flex min-h-screen mt-[63px]">
       <div className="w-72 p-4">
-        <FilterSidebar selectedBrands={selectedBrands} setSelectedBrands={setSelectedBrands} />
+        <Filter selectedBrands={selectedBrands} setSelectedBrands={setSelectedBrands} />
       </div>
       <div className="flex-1 p-6">
         <div className="flex items-center justify-between mb-6">
