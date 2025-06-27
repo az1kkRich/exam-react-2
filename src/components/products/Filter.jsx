@@ -4,18 +4,9 @@ import { useState } from "react";
 
 const { Panel } = Collapse;
 
-const brands = [
-  { label: "Apple", count: 110 },
-  { label: "Samsung", count: 125 },
-  { label: "Xiaomi", count: 68 },
-  { label: "Poco", count: 44 },
-  { label: "OPPO", count: 36 },
-  { label: "Honor", count: 10 },
-  { label: "Nokia", count: 22 },
-  { label: "Realme", count: 35 },
-];
 
-function Filter({ selectedBrands, setSelectedBrands }) {
+
+function Filter({ selectedBrands, setSelectedBrands, brands }) {
   const [search, setSearch] = useState("");
 
   const onBrandChange = (checkedValue) => {

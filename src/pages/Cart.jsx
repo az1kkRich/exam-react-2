@@ -4,10 +4,9 @@ import { Input, Button, Popconfirm } from 'antd';
 import { MinusOutlined, PlusOutlined, CloseOutlined } from '@ant-design/icons';
 
 const CartPage = () => {
-  const { cart, removeFromCart } = useCartStore();
+  const { cart, removeFromCart, updateQuantity } = useCartStore();
 
-  // Mahsulot soni .
-  const subtotal = cart.reduce((acc, item) => acc + item.price * 1, 0);
+  const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
   const tax = 50;
   const shipping = 29;
   const total = subtotal + tax + shipping;
@@ -20,32 +19,38 @@ const CartPage = () => {
 
         {cart.map((item) => (
           <div key={item.id} className="flex items-center justify-between border-b py-6">
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col md:flex-row text-center items-center gap-4">
               <img src={item.images[0]} alt={item.title} className="w-16 h-16 object-contain" />
               <div>
                 <p className="font-medium">{item.title}</p>
-                <p className="text-sm text-gray-500">#{item.id}</p>
               </div>
             </div>
 
             {/* Quantity Controls & Price */}
             <div className="flex items-center gap-4">
-              <Button shape="circle" icon={<MinusOutlined />} size="small" />
-              <span className="border px-4 py-1 rounded">1</span>
-              <Button shape="circle" icon={<PlusOutlined />} size="small" />
-              <p className="w-20 text-right font-semibold">${item.price}</p>
-              {/* Remove Button */}
-              <Popconfirm
-                title="Are you sure you want to remove this item from your cart?"
-                onConfirm={() => {
-                  removeFromCart(item.id);
-                }}
-                okText="Yes"
-                cancelText="No" >
+              <Button
+                shape="circle"
+                icon={<MinusOutlined />}
+                onClick={() => updateQuantity(item.id, -1)}
+                size="small"
+              />
+              <span className="border px-4 py-1 rounded">{item.quantity}</span>
+              <Button
+                shape="circle"
+                icon={<PlusOutlined />}
+                onClick={() => updateQuantity(item.id, 1)}
+                size="small"
+              />
+              <p className="w-20 text-right font-semibold">${(item.price * item.quantity).toFixed(2)}</p>
 
+              <Popconfirm
+                title="Remove this item from cart?"
+                onConfirm={() => removeFromCart(item.id)}
+                okText="Yes"
+                cancelText="No"
+              >
                 <Button type="text" icon={<CloseOutlined />} />
               </Popconfirm>
-
             </div>
           </div>
         ))}
@@ -74,7 +79,7 @@ const CartPage = () => {
             <span>${tax}</span>
           </div>
           <div className="flex justify-between">
-            <span>Taxminiy yetkazib berish </span>
+            <span>Taxminiy yetkazib berish</span>
             <span>${shipping}</span>
           </div>
         </div>
@@ -84,12 +89,7 @@ const CartPage = () => {
           <span>${total.toFixed(2)}</span>
         </div>
 
-        <Button
-          type="primary"
-          block
-          size="large"
-          className="mt-6 bg-black hover:bg-gray-800"
-        >
+        <Button type="primary" block size="large" className="mt-6 bg-black hover:bg-gray-800">
           Checkout
         </Button>
       </div>

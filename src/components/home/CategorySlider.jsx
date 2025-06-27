@@ -37,6 +37,7 @@ import {
 import 'swiper/css';
 import 'swiper/css/navigation';
 import { Link } from 'react-router-dom';
+import MotionBox from '../../effects/MotionBox';
 
 export const categories = [
   { key: 'beauty', label: 'Beauty', icon: <FaRegHeart /> },
@@ -103,15 +104,16 @@ const CategorySlider = () => {
       >
         {categories.map((cat, index) => (
           <SwiperSlide key={index}>
-
-            <div className="bg-gray-100 p-4 h-25 rounded-xl text-center flex flex-col justify-center items-center shadow hover:bg-gray-200 transition">
-              <div className="text-3xl text-amber-400">
-                {cat.icon}
+            <MotionBox delay={0.01 * index} direction='up'>
+              <div className="bg-gray-100 p-4 h-25 rounded-xl text-center flex flex-col justify-center items-center shadow hover:bg-gray-200 transition">
+                <div className="text-3xl text-amber-400">
+                  {cat.icon}
+                </div>
+                <Link to={`/categories/${cat.key}`} className="mt-2  hover:underline">
+                  <p className="font-medium">{cat.label}</p>
+                </Link>
               </div>
-              <Link to={`/categories/${cat.key}`} className="mt-2  hover:underline">
-                <p className="font-medium">{cat.label}</p>
-              </Link>
-            </div>
+            </MotionBox>
           </SwiperSlide>
         ))}
       </Swiper>

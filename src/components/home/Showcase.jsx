@@ -7,6 +7,7 @@ import ipadpro from '../../assets/ipadPro.png'
 import s21 from '../../assets/s21.png'
 import macbook from '../../assets/Macbook_1.png';
 import { Link } from 'react-router-dom';
+import MotionBox from '../../effects/MotionBox';
 
 const products = [
   {
@@ -41,9 +42,10 @@ const products = [
 
 const ProductShowcase = () => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 max-w-[1700px] mx-auto mt-5">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4  max-w-[1700px] mx-auto mt-5">
       {products.map((item, index) => (
-        <div key={index} className={`p-6 ${item.bg} flex flex-col items-center text-center`}>
+        <MotionBox delay={0.06 * index} direction='up'>
+        <div key={index} className={`p-6 ${item.bg} flex flex-col items-center h-full text-center`}>
           <img src={item.image} alt={item.title} className="mb-4 w-full  object-contain" />
           <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
           <p className="text-sm mb-4 max-w-xs">{item.description}</p>
@@ -53,6 +55,7 @@ const ProductShowcase = () => {
             </Button>
           </Link>
         </div>
+        </MotionBox>
       ))}
     </div>
   );
