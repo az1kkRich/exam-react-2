@@ -1,6 +1,7 @@
 // src/components/Navbar.jsx
 import React, { useState } from 'react';
 import { Badge, Input, Drawer, Button } from 'antd';
+import { useQuery } from '@tanstack/react-query';
 import {
   HeartOutlined,
   ShoppingCartOutlined,
@@ -12,12 +13,32 @@ import { Link, NavLink } from 'react-router-dom';
 import { useCartStore } from '../store/useCartStore';
 import { FaWindowClose } from 'react-icons/fa';
 
+import { fetchSearchProducts } from '../api/api';
+
+const { Search } = Input;
 const Navbar = () => {
   const { wishlist, cart } = useCartStore();
   const [open, setOpen] = useState(false);
 
   const showDrawer = () => setOpen(true);
   const onClose = () => setOpen(false);
+
+  // Handle search input
+  const [query, setQuery] = useState('');
+
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ['search', query],
+    queryFn: () => fetchSearchProducts(query),
+    enabled: query.length > 3, // Only run the query if query is not empty
+  })
+
+  const handleSearch = (value) => {
+    setTimeout(() => {
+      setQuery(value);
+    }, 500);
+  };
+
+  console.log('Search results:', data);
 
   return (
     <div id="navbar" className="fixed w-full h-[63px] bg-white top-0 z-10 shadow-md">
@@ -29,9 +50,48 @@ const Navbar = () => {
           </Link>
 
           {/* Search Input (hidden on small screens) */}
-          <div className="hidden md:flex flex-1 max-w-md mx-6">
-            <Input placeholder="Search" className="rounded-md" />
+          <div className="hidden md:flex flex-col flex-1 max-w-md mx-6 relative">
+            <Search
+              placeholder="Search products"
+              allowClear
+              enterButton
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onSearch={handleSearch}
+            />
+
+            {isLoading && (
+              <div className="absolute top-12 left-0 w-full bg-white shadow rounded p-2">
+                Loading...
+              </div>
+            )}
+            {isError && (
+              <div className="absolute top-12 left-0 w-full bg-white shadow rounded p-2 text-red-500">
+                Error: {error.message}
+              </div>
+            )}
+
+            {data?.products?.length > 0 && (
+              <div className="absolute top-12 left-0 w-full bg-white shadow rounded p-2 z-50">
+                <ul className="divide-y divide-gray-200">
+                  {data.products.slice(0, 5).map((item) => (
+                    <li key={item.id} className="py-2 px-3 hover:bg-gray-100 cursor-pointer">
+                      <Link to={`/detail/${item.id}`} onClick={() => setQuery('')}>
+                        {item.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {query && !isLoading && data?.results?.length === 0 && (
+              <div className="absolute top-12 left-0 w-full bg-white shadow rounded p-2">
+                No results
+              </div>
+            )}
           </div>
+
 
           {/* Desktop nav */}
           <ul className="hidden md:flex gap-6 items-center text-gray-500 font-medium">
@@ -73,7 +133,45 @@ const Navbar = () => {
           closeIcon={<FaWindowClose size={28} />}
         >
           <div className="mb-4">
-            <Input placeholder="Search..." />
+            <Search
+              placeholder="Search products"
+              allowClear
+              enterButton
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onSearch={handleSearch}
+            />
+
+            {isLoading && (
+              <div className="absolute top-12 left-0 w-full bg-white shadow rounded p-2">
+                Loading...
+              </div>
+            )}
+            {isError && (
+              <div className="absolute top-12 left-0 w-full bg-white shadow rounded p-2 text-red-500">
+                Error: {error.message}
+              </div>
+            )}
+
+            {data?.products?.length > 0 && (
+              <div className="absolute top-30 left-0 w-full bg-white shadow rounded p-2 z-50">
+                <ul className="divide-y divide-gray-200">
+                  {data.products.slice(0, 5).map((item) => (
+                    <li key={item.id} className="py-2 px-3 hover:bg-gray-100 cursor-pointer">
+                      <Link to={`/detail/${item.id}`} onClick={() => { setQuery('');  onClose(); }} >
+                        {item.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {query && !isLoading && data?.results?.length === 0 && (
+              <div className="absolute top-12 left-0 w-full bg-white shadow rounded p-2">
+                No results
+              </div>
+            )}
           </div>
 
           <ul className="flex flex-col gap-4 text-gray-700 font-medium">

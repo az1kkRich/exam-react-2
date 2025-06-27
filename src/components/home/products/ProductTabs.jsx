@@ -13,7 +13,6 @@ const ProductTabs = () => {
     queryKey: ['products'],
     queryFn: () => fetchProducts(8, 0),
   })
-  console.log(data);
   
 
   if (isLoading) return <div className='w-full flex justify-center mt-10'>

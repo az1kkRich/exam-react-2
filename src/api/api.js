@@ -38,3 +38,13 @@ export const fetchCategories = async (category) => {
         throw error;
     }
 }
+
+export const fetchSearchProducts = async (query) => {
+    try {
+        const response = await api.get(`/search?q=${query}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error searching products:', error);
+        throw error;
+    }
+}
