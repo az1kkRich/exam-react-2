@@ -11,7 +11,6 @@ const brands = [
   { label: "Poco", count: 44 },
   { label: "OPPO", count: 36 },
   { label: "Honor", count: 10 },
-  { label: "Motorola", count: 34 },
   { label: "Nokia", count: 22 },
   { label: "Realme", count: 35 },
 ];

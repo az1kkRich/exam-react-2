@@ -1,27 +1,32 @@
-// src/components/ProductTabs.jsx
+
 import React, { useState } from 'react';
 import ProductCard from './ProductCard';
-import cartImage from '../../../assets/Iphone-14-pro-1.png'
-
-// 🔧 Sample data (istalgancha kengaytirishingiz mumkin)
-const products = [
-  { name: 'Apple iPhone 14 Pro Max 128GB Deep Purple', price: 900, image: cartImage },
-  { name: 'Blackmagic Pocket Cinema Camera 6k', price: 2535, image: cartImage },
-  { name: 'Apple Watch Series 9 GPS 41mm', price: 399, image: cartImage },
-  { name: 'AirPods Max Silver', price: 549, image: cartImage },
-  { name: 'Samsung Galaxy Watch6 Classic 47mm', price: 299, image: cartImage },
-  { name: 'Galaxy Z Fold5 Unlocked | 256GB', price: 1600, image: cartImage },
-  { name: 'Galaxy Buds FE Graphite', price: 100, image: cartImage },
-  { name: 'Apple iPad 10.2" 64GB Wi-Fi Silver', price: 329, image: cartImage },
-];
+import { useQuery } from '@tanstack/react-query';
+import { fetchProducts } from '../../../api/api';
+import { Spin } from 'antd';
+import { Link } from 'react-router-dom';
 
 const ProductTabs = () => {
   const [activeTab, setActiveTab] = useState('New Arrival');
+
+  const {data, error, isLoading} = useQuery({
+    queryKey: ['products'],
+    queryFn: () => fetchProducts(8, 0),
+  })
+  console.log(data);
+  
+
+  if (isLoading) return <div className='w-full flex justify-center mt-10'>
+    <Spin size='large' className='flex justify-center items-center h-screen' />
+  </div>;
+  if (error) return <div className='text-red-500'>Error loading products</div>;
+
 
   return (
     <div className="container mx-auto px-5 py-10">
       <div className="flex gap-6 mb-6 text-lg font-medium">
         {['New Arrival', 'Bestseller', 'Featured Products'].map(tab => (
+          <Link to={'/categories/smartphones'} className='text-black' key={tab}>
           <button
             key={tab}
             className={`pb-2 border-b-2 ${
@@ -31,12 +36,13 @@ const ProductTabs = () => {
           >
             {tab}
           </button>
+          </Link>
         ))}
       </div>
 
       {/* Products */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-        {products.map((product, index) => (
+        {data.products.map((product, index) => (
           <ProductCard key={index} product={product} />
         ))}
       </div>

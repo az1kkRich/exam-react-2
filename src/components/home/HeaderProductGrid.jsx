@@ -1,22 +1,26 @@
-// src/components/ProductGrid.jsx
+
 import React from 'react';
 import { Button } from 'antd';
-import ps5Img from '../../assets/PlayStation.png';        // Rasmni joylashtiring
+import ps5Img from '../../assets/PlayStation.png';
 import macbookImg from '../../assets/macbook.png';
 import airpodsImg from '../../assets/airpods.png';
 import visionProImg from '../../assets/visionpro.png';
 import laptopBody from '../../assets/laptop-body.png'
+import { Link } from 'react-router-dom';
 
 const ProductGrid = () => {
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 items-stretch pb-12 max-w-[1700px] mx-auto bg-gray-50"> 
-        {/* items-stretch - bu hieght larni birxil qiladi */}
+        <div className="grid grid-cols-1 md:grid-cols-2 items-stretch pb-12 max-w-[1700px] mx-auto bg-gray-50">
+            {/* items-stretch - bu hieght larni birxil qiladi */}
             <div>
                 {/* PlayStation */}
                 <div className="bg-white py-6 flex flex-row-reverse justify-center ">
                     <div>
                         <h2 className="text-3xl font-semibold mb-2">Playstation 5</h2>
                         <p className="text-gray-500 mb-4">Incredibly powerful CPUs, GPUs, and an SSD with integrated I/O...</p>
+                        <Link to={'/detail/78'}>
+                            <Button type="default" className="border-black">Shop Now</Button>
+                        </Link>
 
                     </div>
                     <img src={ps5Img} alt="Playstation 5" className=" self-start" />
@@ -27,6 +31,9 @@ const ProductGrid = () => {
                         <div>
                             <h2 className="text-2xl">Apple <br /><span className="font-bold">AirPods Max</span></h2>
                             <p className="text-gray-500 mt-1">Computational audio. Listen, it’s powerful</p>
+                            <Link to={'/detail/100'}>
+                                <Button type="default" className="border-black">Shop Now</Button>
+                            </Link>
                         </div>
                         <img src={airpodsImg} alt="AirPods Max" className="w-28" />
                     </div>
@@ -36,6 +43,9 @@ const ProductGrid = () => {
                         <div>
                             <h2 className="text-2xl">Apple <br /><span className="font-bold">Vision Pro</span></h2>
                             <p className="text-gray-400 mt-1">An immersive way to experience entertainment</p>
+                            <Link to={'/detail/112'}>
+                                <Button type="default" className="border-black">Shop Now</Button>
+                            </Link>
                         </div>
                         <img src={visionProImg} alt="Vision Pro" className="w-28" />
                     </div>
@@ -52,11 +62,13 @@ const ProductGrid = () => {
                         <p className="text-gray-500 mt-2 mb-4 max-w-sm">
                             The new 15-inch MacBook Air makes room for more of what you love...
                         </p>
-                        <Button type="default" className="border-black">Shop Now</Button>
+                        <Link to={'/detail/78'}>
+                            <Button type="default" className="border-black">Shop Now</Button>
+                        </Link>
                     </div>
                     <div className='flex flex-col'>
-                        <img src={macbookImg} alt="Macbook"  className='h-[70%]'/>
-                        <img src={laptopBody} alt="Macbook"  className='h-[20%]'/>
+                        <img src={macbookImg} alt="Macbook" className='h-[70%]' />
+                        <img src={laptopBody} alt="Macbook" className='h-[20%]' />
 
                     </div>
                 </div>
